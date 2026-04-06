@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wellness Journal | Ultimate Health Center</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .journal-container { max-width: 800px; margin: 0 auto; }
+        .journal-form { background: #fff; padding: 2rem; border-radius: 8px; border: 1px solid #dfe6e9; margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+        .form-group input, .form-group textarea { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; }
+        .mood-selector { display: flex; gap: 1rem; justify-content: space-between; }
+        .mood-btn { flex: 1; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .mood-btn.active { border-color: var(--primary); background: #f0fff4; transform: translateY(-2px); }
+        .history-card { background: #fff; padding: 1.5rem; border-radius: 8px; border-left: 5px solid var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 1rem; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand"><span class="logo-icon">&#9877;</span> UltimateHealth</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="calculators.html">Calculators</a></li>
+            <li><a href="meal-planner.html">Meal Planner</a></li>
+            <li><a href="workout-builder.html">Workouts</a></li>
+            <li><a href="wellness-journal.html" class="active">Wellness</a></li>
+            <li><a href="find-professional.html">Find a Pro</a></li>
+            <li><a href="marketplace.html">Shop</a></li>
+        </ul>
+    </nav>
+    <section class="section">
+        <h1 class="section-title">Daily Wellness Journal</h1>
+        <div class="journal-container">
+            <div class="journal-form">
+                <div class="form-group">
+                    <label>How are you feeling today?</label>
+                    <div class="mood-selector">
+                        <div class="mood-btn" onclick="setMood('Happy', this)">😊 Happy</div>
+                        <div class="mood-btn" onclick="setMood('Neutral', this)">😐 Neutral</div>
+                        <div class="mood-btn" onclick="setMood('Sad', this)">😔 Sad</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Sleep (Hours)</label>
+                    <input type="number" id="sleepHours">
+                </div>
+                <div class="form-group">
+                    <label>Water (Glasses)</label>
+                    <input type="number" id="waterGlasses">
+                </div>
+                <button class="btn btn-primary" style="width:100%" onclick="saveEntry()">Save Entry</button>
+            </div>
+            <h3>Recent History</h3>
+            <div id="journalHistory"></div>
+        </div>
+    </section>
+    <script>
+        let selectedMood = '';
+        function setMood(m, b) { selectedMood = m; document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('active')); b.classList.add('active'); }
+        function saveEntry() {
+            const entry = { date: new Date().toLocaleDateString(), mood: selectedMood, sleep: document.getElementById('sleepHours').value, water: document.getElementById('waterGlasses').value };
+            let history = JSON.parse(localStorage.getItem('wellnessHistory') || '[]');
+            history.unshift(entry);
+            localStorage.setItem('wellnessHistory', JSON.stringify(history));
+            renderHistory();
+        }
+        function renderHistory() {
+            const history = JSON.parse(localStorage.getItem('wellnessHistory') || '[]');
+            document.getElementById('journalHistory').innerHTML = history.map(e => `
+                <div class="history-card">
+                    <strong>${e.date}</strong> - Mood: ${e.mood}<br>
+                    <span>😴 ${e.sleep} hrs | 💧 ${e.water} glasses</span>
+                </div>
+            `).join('');
+        }
+        renderHistory();
+    </script>
+</body>
+</html>
