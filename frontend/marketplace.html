@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Marketplace | Ultimate Health Center</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem; }
+        .product-card { background: #fff; border: 1px solid #eee; border-radius: 12px; overflow: hidden; }
+        .product-info { padding: 1.5rem; }
+        .product-price { font-size: 1.25rem; font-weight: bold; color: var(--primary); margin: 1rem 0; }
+        .cart-float { position: fixed; bottom: 2rem; right: 2rem; background: var(--primary); color: #fff; padding: 1rem 2rem; border-radius: 50px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand"><span class="logo-icon">&#9877;</span> UltimateHealth</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="calculators.html">Calculators</a></li>
+            <li><a href="meal-planner.html">Meal Planner</a></li>
+            <li><a href="workout-builder.html">Workouts</a></li>
+            <li><a href="wellness-journal.html">Wellness</a></li>
+            <li><a href="find-professional.html">Find a Pro</a></li>
+            <li><a href="marketplace.html" class="active">Shop</a></li>
+        </ul>
+    </nav>
+    <section class="section">
+        <h1 class="section-title">Health & Wellness Shop</h1>
+        <div class="product-grid" id="productGrid"></div>
+    </section>
+    <div class="cart-float" onclick="alert('Checkout coming soon!')">🛒 <span id="cartCount">0</span> Items</div>
+    <script>
+        const products = [
+            { name: "Organic Protein Powder", price: 34.99, img: "🥛" },
+            { name: "Yoga Mat (Eco)", price: 25.00, img: "🧘" },
+            { name: "Fitness Watch", price: 129.00, img: "⌚" }
+        ];
+        function addToCart() { document.getElementById('cartCount').innerText = parseInt(document.getElementById('cartCount').innerText) + 1; }
+        document.getElementById('productGrid').innerHTML = products.map(p => `
+            <div class="product-card">
+                <div style="height:150px; background:#f8f9fa; display:flex; align-items:center; justify-content:center; font-size:4rem;">${p.img}</div>
+                <div class="product-info">
+                    <h3>${p.name}</h3>
+                    <div class="product-price">$${p.price.toFixed(2)}</div>
+                    <button class="btn btn-primary" style="width:100%" onclick="addToCart()">Add to Cart</button>
+                </div>
+            </div>
+        `).join('');
+    </script>
+</body>
+</html>
